@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"io/ioutil"
+	"bufio"
+	"core"
 )
 
 func check(e error) {
@@ -16,7 +17,15 @@ func main() {
 	fileName := os.Args[1]
 	fmt.Println(fileName)
 
-	dat, err := ioutil.ReadFile(fileName)
+	file, err := os.Open(fileName)
 	check(err)
-	fmt.Print(string(dat))
+
+	scanner := bufio.NewScanner(file)
+	counter := 0
+	for scanner.Scan() {
+		counter++
+		text := scanner.Text()
+		core.tokenize({text: text, no: counter})
+		fmt.Println(text)
+	}
 }
